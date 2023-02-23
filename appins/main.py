@@ -14,14 +14,16 @@ def init():
 
 
 @app.command(help="Clone an app repository from GitHub into apps directory.")
-def get_app(app_url: str):
+def clone_app(app_url: str):
     """
     Clone an app repository from GitHub into apps directory.
     url: The url of the repository to clone.
     """
     print(f"Cloning {app_url}...")
     apps_directory = "." if pathlib.Path.cwd().name == "apps" else "./apps"
-    subprocess.run(["git", "clone", app_url, apps_directory + "/" + app_url.split("/")[-1]])
+    subprocess.run(
+        ["git", "clone", app_url, apps_directory + "/" + app_url.split("/")[-1]]
+    )
 
 
 @app.command(help="Remove an app from the apps directory.")
@@ -37,7 +39,7 @@ def remove_app(app_name: str):
 
 
 @app.command(help="Create a new app.")
-def new_app():
+def create_new_app():
     print("Creating new app from...")
     new_app_template = "git@github.com:0xsirsaif/enabled-app-template.git"
     apps_directory = "." if pathlib.Path.cwd().name == "apps" else "./apps"
@@ -75,7 +77,7 @@ def update_app(app_name: str):
 
 
 @app.command()
-def migration_create():
+def create_migration():
     """
     Create a new migration.
     """
@@ -83,10 +85,8 @@ def migration_create():
 
 
 @app.command()
-def migration_apply():
+def apply_migration():
     """
     Apply all migrations.
     """
     print("Applying migrations...")
-
-
