@@ -8,11 +8,19 @@ app = Typer()
 
 @app.command(help="Create a new project from a template.")
 def init():
+    def _clone_core_app(project_name: pathlib.Path):
+        core_app_url = "git@github.com:enabledu/enabled.git"
+        print(f"Cloning {core_app_url}...")
+        apps_directory = "." if pathlib.Path.cwd().name == "apps" else "./apps"
+        subprocess.run(
+            ["git", "clone", core_app_url, project_name / apps_directory / "enabled"]
+        )
+
     print("Creating new project...")
     template_url = "git@github.com:0xsirsaif/enabled-project-template.git"
     subprocess.run(["cookiecutter", template_url])
-    # get core app and install requirements
-    clone_app("git@github.com:enabledu/enabled.git")
+    created_project_name = pathlib.Path.cwd()
+    _clone_core_app(created_project_name)
 
 
 @app.command(help="Clone an app repository from GitHub into apps directory.")
@@ -22,11 +30,11 @@ def clone_app(app_url: str):
     url: The url of the repository to clone.
     """
     print(f"Cloning {app_url}...")
+
     apps_directory = "." if pathlib.Path.cwd().name == "apps" else "./apps"
     app_to_clone = app_url.split("/")[-1].replace(".git", "")
-    subprocess.run(
-        ["git", "clone", app_url, apps_directory + "/" + app_to_clone]
-    )
+
+    subprocess.run(["git", "clone", app_url, apps_directory + "/" + app_to_clone])
     install_app(app_to_clone)
 
 
@@ -76,7 +84,9 @@ def install_app(app_name: str):
         if requirements_file.exists():
             subprocess.run(["python", "-m", "pip", "install", "-r", requirements_file])
     else:
-        print("No apps directory found. Make sure you are in the project root directory.")
+        print(
+            "No apps directory found. Make sure you are in the project root directory."
+        )
 
 
 @app.command()

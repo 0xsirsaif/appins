@@ -1,4 +1,4 @@
-from appins.main import merge_esdl
+from appins.main import merge_esdl, init
 
 
 def test_merge_esdl_no_dbschema(mocker, temp_enabled_project):
@@ -33,3 +33,17 @@ def test_merge_esdl_with_multiple_apps(cwd, temp_enabled_project):
     assert (dbschema / "my_app_default.esdl").exists()
     assert (dbschema / "my_app_2_default.esdl").exists()
     assert len(list(dbschema.iterdir())) == 2
+
+
+def test_init_app(mocker, cwd, temp_enabled_project):
+    mocker.patch("subprocess.run", return_value=temp_enabled_project)
+
+    init()
+
+    import subprocess
+
+    core_app_dir = temp_enabled_project / "apps" / "enabled"
+
+    print(subprocess.run(["tree", temp_enabled_project]))
+
+    assert (core_app_dir / "backend" / "src" / "main.py").exists()
