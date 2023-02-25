@@ -4,6 +4,7 @@ profile = "black"
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 addopts = "--ignore=test_build.py"
+# mock_use_standalone_module = true
 
 [build-system]
 # Minimum requirements for the build system to execute.
@@ -68,3 +69,18 @@ dev = [
 
 [project.urls]
 Documentation = "https://github/0xsirsaif/appins"
+
+[tool.ruff]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    # "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]

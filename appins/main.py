@@ -8,7 +8,7 @@ app = Typer()
 
 @app.command(help="Create a new project from a template.")
 def init():
-    print(f"Creating new project...")
+    print("Creating new project...")
     template_url = "git@github.com:0xsirsaif/enabled-project-template.git"
     subprocess.run(["cookiecutter", template_url])
 
@@ -65,6 +65,12 @@ def install_app(app_name: str):
     app_name: The name of the app to install.
     """
     print(f"Installing {app_name}...")
+    cwd = pathlib.Path.cwd()
+    is_apps_besides = True if (cwd / "apps").exists() else False
+    if is_apps_besides:
+        pass
+    else:
+        pass
 
 
 @app.command()
@@ -77,16 +83,30 @@ def update_app(app_name: str):
 
 
 @app.command()
-def create_migration():
+def merge_esdl():
     """
-    Create a new migration.
+    Merge all apps `.esdl` files into dbschema global directory.
     """
-    print("Creating new migration...")
+    cwd = pathlib.Path.cwd()
+    is_dbschema_besides = True if (cwd / "dbschema").exists() else False
+    if is_dbschema_besides:
+        global_dbschema = cwd / "dbschema"
+        apps_directory = cwd / "apps"
+        for app_dir in apps_directory.iterdir():
+            if app_dir.is_dir():
+                try:
+                    app_dbschema = app_dir / "dbschema"
+                    esdl_files = app_dbschema.glob("*.esdl")
+                    for esdl_file in esdl_files:
+                        subprocess.run(
+                            [
+                                "cp",
+                                esdl_file,
+                                global_dbschema / f"{app_dir.name}_{esdl_file.name}",
+                            ]
+                        )
+                except FileNotFoundError as e:
+                    print(f"FileNotFoundError: {e}")
 
-
-@app.command()
-def apply_migration():
-    """
-    Apply all migrations.
-    """
-    print("Applying migrations...")
+    else:
+        print("No dbschema directory found. Please got to the project root directory.")
