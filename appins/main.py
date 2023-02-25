@@ -11,19 +11,23 @@ def init():
     print("Creating new project...")
     template_url = "git@github.com:0xsirsaif/enabled-project-template.git"
     subprocess.run(["cookiecutter", template_url])
+    # get core app and install requirements
+    clone_app("git@github.com:enabledu/enabled.git")
 
 
 @app.command(help="Clone an app repository from GitHub into apps directory.")
 def clone_app(app_url: str):
     """
-    Clone an app repository from GitHub into apps directory.
+    Clone an app repository from GitHub into apps directory. and install requirements.
     url: The url of the repository to clone.
     """
     print(f"Cloning {app_url}...")
     apps_directory = "." if pathlib.Path.cwd().name == "apps" else "./apps"
+    app_to_clone = app_url.split("/")[-1].replace(".git", "")
     subprocess.run(
-        ["git", "clone", app_url, apps_directory + "/" + app_url.split("/")[-1]]
+        ["git", "clone", app_url, apps_directory + "/" + app_to_clone]
     )
+    install_app(app_to_clone)
 
 
 @app.command(help="Remove an app from the apps directory.")
@@ -68,9 +72,11 @@ def install_app(app_name: str):
     cwd = pathlib.Path.cwd()
     is_apps_besides = True if (cwd / "apps").exists() else False
     if is_apps_besides:
-        pass
+        requirements_file = cwd / "apps" / app_name / "requirements.txt"
+        if requirements_file.exists():
+            subprocess.run(["python", "-m", "pip", "install", "-r", requirements_file])
     else:
-        pass
+        print("No apps directory found. Make sure you are in the project root directory.")
 
 
 @app.command()
