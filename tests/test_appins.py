@@ -35,9 +35,7 @@ def test_merge_esdl_with_multiple_apps(cwd, temp_enabled_project):
     assert len(list(dbschema.iterdir())) == 2
 
 
-def test_init_app(mocker, cwd, temp_enabled_project):
-    mocker.patch("subprocess.run", return_value=temp_enabled_project)
-
+def test_init_app(cwd, temp_enabled_project):
     init()
 
     import subprocess
