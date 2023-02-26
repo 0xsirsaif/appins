@@ -15,7 +15,7 @@ def init():
 
     # typer to ask for project name
     project_name = typer.prompt("Project name", default="Base project")
-    project_slug = typer.prompt("Project slug", default="base_project")
+    project_slug = typer.prompt("Project slug", default=project_name.lower().replace(" ", "_"))
     author = typer.prompt("Author", default="enabled")
 
     # cookiecutter to create project
@@ -50,7 +50,6 @@ def clone_app(app_url: str):
     app_to_clone = app_url.split("/")[-1].replace(".git", "")
 
     subprocess.run(["git", "clone", app_url, apps_directory + "/" + app_to_clone])
-    install_app(app_to_clone)
 
 
 @app.command(help="Remove an app from the apps directory.")
@@ -87,31 +86,25 @@ def start(server_path: str = "core.backend.src.main:app"):
 
 
 @app.command()
-def install_app(app_name: str):
+def install_requirements():
     """
     Install app requirements.
     app_name: The name of the app to install.
     """
-    print(f"Installing {app_name}...")
+    print(f"Installing requirements")
     cwd = pathlib.Path.cwd()
     is_apps_besides = True if (cwd / "apps").exists() else False
     if is_apps_besides:
-        requirements_file = cwd / "apps" / app_name / "requirements.txt"
-        if requirements_file.exists():
-            subprocess.run(["python", "-m", "pip", "install", "-r", requirements_file])
+        apps_dir = cwd / "apps"
+        for app_dir in apps_dir.iterdir():
+            if app_dir.is_dir():
+                requirements_file = app_dir / "requirements.txt"
+                if requirements_file.exists():
+                    subprocess.run(["python", "-m", "pip", "install", "-r", requirements_file])
     else:
         print(
             "No apps directory found. Make sure you are in the project root directory."
         )
-
-
-@app.command()
-def update_app(app_name: str):
-    """
-    Update an app.
-    app_name: The name of the app to update.
-    """
-    print(f"Updating {app_name}...")
 
 
 @app.command()
