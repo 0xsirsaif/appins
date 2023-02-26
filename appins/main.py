@@ -79,6 +79,7 @@ def create_new_app():
 
     cookiecutter(
         new_app_template,
+        output_dir=apps_directory,
         no_input=True,
         extra_context={
             "app_name": app_name,
