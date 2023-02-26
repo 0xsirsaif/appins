@@ -1,26 +1,41 @@
 import pathlib
 import subprocess
 
-from typer import Typer
+from cookiecutter.main import cookiecutter
 
-app = Typer()
+import typer
+
+app = typer.Typer()
 
 
 @app.command(help="Create a new project from a template.")
 def init():
-    def _clone_core_app(project_name: pathlib.Path):
-        core_app_url = "git@github.com:enabledu/enabled.git"
-        print(f"Cloning {core_app_url}...")
-        apps_directory = "." if pathlib.Path.cwd().name == "apps" else "./apps"
-        subprocess.run(
-            ["git", "clone", core_app_url, project_name / apps_directory / "enabled"]
-        )
-
     print("Creating new project...")
     template_url = "git@github.com:0xsirsaif/enabled-project-template.git"
-    subprocess.run(["cookiecutter", template_url])
-    created_project_name = pathlib.Path.cwd()
-    _clone_core_app(created_project_name)
+
+    # typer to ask for project name
+    project_name = typer.prompt("Project name", default="Base project")
+    project_slug = typer.prompt("Project slug", default="base_project")
+    author = typer.prompt("Author", default="enabled")
+
+    # cookiecutter to create project
+    cookiecutter(
+        template_url,
+        no_input=True,
+        extra_context={
+            "project_name": project_name,
+            "project_slug": project_slug,
+            "author": author,
+        },
+    )
+
+    cwd = pathlib.Path.cwd()
+    apps_dir = cwd / project_slug / "apps"
+
+    core_app_url = "git@github.com:enabledu/enabled.git"
+    print(f"Cloning {core_app_url}...")
+
+    subprocess.run(["git", "clone", core_app_url, apps_dir / "enabled"])
 
 
 @app.command(help="Clone an app repository from GitHub into apps directory.")
@@ -55,7 +70,8 @@ def create_new_app():
     print("Creating new app from...")
     new_app_template = "git@github.com:0xsirsaif/enabled-app-template.git"
     apps_directory = "." if pathlib.Path.cwd().name == "apps" else "./apps"
-    subprocess.run(["cookiecutter", new_app_template, "--output-dir", apps_directory])
+
+    cookiecutter(new_app_template, no_input=True, output_dir=apps_directory)
 
 
 @app.command()

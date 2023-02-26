@@ -4,3 +4,4 @@ pytest-mock>=3.10.0
 ruff>=0.0.252
 black>=23.1.0
 mypy>=1.0.1
+cookiecutter>=2.1.1

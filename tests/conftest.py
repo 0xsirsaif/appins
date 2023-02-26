@@ -24,3 +24,23 @@ def temp_enabled_project(tmp_path):
 def cwd(mocker, temp_enabled_project):
     mocker.patch("pathlib.Path.cwd", return_value=temp_enabled_project)
     yield temp_enabled_project
+
+
+@pytest.fixture
+def project_slug(tmp_path):
+    project_slug = tmp_path / "my_project"
+    project_slug.mkdir()
+
+    yield project_slug
+
+    shutil.rmtree(project_slug)
+
+
+@pytest.fixture
+def apps_dir(project_slug):
+    apps_dir = project_slug / "apps"
+    apps_dir.mkdir()
+
+    yield apps_dir
+
+    shutil.rmtree(apps_dir)

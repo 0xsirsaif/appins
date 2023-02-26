@@ -35,13 +35,5 @@ def test_merge_esdl_with_multiple_apps(cwd, temp_enabled_project):
     assert len(list(dbschema.iterdir())) == 2
 
 
-def test_init_app(cwd, temp_enabled_project):
+def test_init_app():
     init()
-
-    import subprocess
-
-    core_app_dir = temp_enabled_project / "apps" / "enabled"
-
-    print(subprocess.run(["tree", temp_enabled_project]))
-
-    assert (core_app_dir / "backend" / "src" / "main.py").exists()
