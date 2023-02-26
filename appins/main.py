@@ -92,7 +92,7 @@ def create_new_app():
 
 
 @app.command()
-def start(server_path: str = "core.backend.src.main:app"):
+def start(server_path: str = "enabled.backend.src.main:app"):
     """
     Start the FastAPI server.
     server_path: The path to the FastAPI server. default: core.backend.src.main:app
