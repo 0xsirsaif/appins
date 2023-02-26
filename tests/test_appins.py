@@ -1,4 +1,4 @@
-from appins.main import merge_esdl, init
+from appins.main import init, merge_esdl
 
 
 def test_merge_esdl_no_dbschema(mocker, temp_enabled_project):

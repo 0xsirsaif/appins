@@ -1,9 +1,8 @@
 import pathlib
 import subprocess
 
-from cookiecutter.main import cookiecutter
-
 import typer
+from cookiecutter.main import cookiecutter
 
 app = typer.Typer()
 
@@ -15,7 +14,9 @@ def init():
 
     # typer to ask for project name
     project_name = typer.prompt("Project name", default="Base project")
-    project_slug = typer.prompt("Project slug", default=project_name.lower().replace(" ", "_"))
+    project_slug = typer.prompt(
+        "Project slug", default=project_name.lower().replace(" ", "_")
+    )
     author = typer.prompt("Author", default="enabled")
 
     # cookiecutter to create project
@@ -70,7 +71,23 @@ def create_new_app():
     new_app_template = "git@github.com:0xsirsaif/enabled-app-template.git"
     apps_directory = "." if pathlib.Path.cwd().name == "apps" else "./apps"
 
-    cookiecutter(new_app_template, no_input=True, output_dir=apps_directory)
+    app_name = typer.prompt("App name", default="Base app")
+    app_slug = typer.prompt("App slug", default=app_name.lower().replace(" ", "_"))
+    author = typer.prompt("Author", default="enabled")
+    app_prefix = typer.prompt("App prefix", default=app_slug)
+    app_tag = typer.prompt("App tag", default=app_slug)
+
+    cookiecutter(
+        new_app_template,
+        no_input=True,
+        extra_context={
+            "app_name": app_name,
+            "app_slug": app_slug,
+            "author_name": author,
+            "app_prefix": app_prefix,
+            "app_tag": app_tag,
+        },
+    )
 
 
 @app.command()
@@ -100,7 +117,9 @@ def install_requirements():
             if app_dir.is_dir():
                 requirements_file = app_dir / "requirements.txt"
                 if requirements_file.exists():
-                    subprocess.run(["python", "-m", "pip", "install", "-r", requirements_file])
+                    subprocess.run(
+                        ["python", "-m", "pip", "install", "-r", requirements_file]
+                    )
     else:
         print(
             "No apps directory found. Make sure you are in the project root directory."
