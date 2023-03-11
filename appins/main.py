@@ -51,6 +51,7 @@ def clone_app(app_url: str):
     app_to_clone = app_url.split("/")[-1].replace(".git", "")
 
     subprocess.run(["git", "clone", app_url, apps_directory + "/" + app_to_clone])
+    write_app_name(app_to_clone)
 
 
 @app.command(help="Remove an app from the apps directory.")
@@ -63,6 +64,7 @@ def remove_app(app_name: str):
     apps_directory = "." if pathlib.Path.cwd().name == "apps" else "./apps"
     removed_app = pathlib.Path(apps_directory + "/" + app_name)
     subprocess.run(["rm", "-rf", removed_app])
+    remove_app_name(app_name)
 
 
 @app.command(help="Create a new app.")
@@ -89,6 +91,8 @@ def create_new_app():
             "app_tag": app_tag,
         },
     )
+
+    write_app_name(app_slug)
 
 
 @app.command()
@@ -155,3 +159,37 @@ def merge_esdl():
 
     else:
         print("No dbschema directory found. Please got to the project root directory.")
+
+
+def write_app_name(app_name):
+    """
+    Search for `site/` directory, get the `apps.txt` file and write app_name inside it
+    """
+    cwd = pathlib.Path.cwd()
+    is_site_besides = True if (cwd / "site").exists() else False
+    if is_site_besides:
+        site_dir = cwd / "site"
+        apps_txt = site_dir / "apps.txt"
+        with open(apps_txt, "a") as f:
+            f.write(app_name + "\n")
+    else:
+        print("No site directory found. Please got to the project root directory.")
+
+
+def remove_app_name(app_name):
+    """
+    Search for `site/` directory, get the `apps.txt` file and remove app_name from it
+    """
+    cwd = pathlib.Path.cwd()
+    is_site_besides = True if (cwd / "site").exists() else False
+    if is_site_besides:
+        site_dir = cwd / "site"
+        apps_txt = site_dir / "apps.txt"
+        with open(apps_txt, "r") as f:
+            lines = f.readlines()
+        with open(apps_txt, "w") as f:
+            for line in lines:
+                if line.strip("\n") != app_name:
+                    f.write(line)
+    else:
+        print("No site directory found. Please got to the project root directory.")
