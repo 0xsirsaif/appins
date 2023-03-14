@@ -95,6 +95,22 @@ def create_new_app():
     write_app_name(app_slug)
 
 
+@app.command(help="Install app")
+def install_app(app_name: str):
+    """
+    add app to apps.txt
+    """
+    write_app_name(app_name)
+
+
+@app.command(help="Uninstall app")
+def uninstall_app(app_name: str):
+    """
+    remove app from apps.txt
+    """
+    remove_app_name(app_name)
+
+
 @app.command()
 def start(server_path: str = "enabled.backend.src.main:app"):
     """
