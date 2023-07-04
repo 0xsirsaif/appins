@@ -230,10 +230,11 @@ def chat():
             print(char, end="", flush=True)
             time.sleep(0.05)
         while True:
-            user_input = input("\n>>> ")
-            for char in run_prompt(agent, user_input):
-                print(char, end="", flush=True)
-                time.sleep(0.05)
+            user_input = input("\n>>> ").strip()
+            for line in run_prompt(agent, user_input):
+                for char in line:
+                    print(char, end="", flush=True)
+                    time.sleep(0.05)
 
     except KeyboardInterrupt:
         print("\nBye!")
@@ -272,6 +273,8 @@ def run_prompt(agent, user_input):
     agent.run(user_input)
     # Restore stdout
     sys.stdout = sys.__stdout__
+
     agent_output = captured_output.getvalue()
-    agent_output = re.search(r"==Result==\n(.+)", agent_output).group(1).strip()
-    return agent_output
+    
+    result = re.search(r"(?<===Result==\n)(.+)", agent_output, re.DOTALL)
+    return result.group()
