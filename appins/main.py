@@ -1,10 +1,14 @@
+import io
+import json
 import pathlib
+import re
 import subprocess
 import sys
 import time
 
 import typer
 from cookiecutter.main import cookiecutter
+from transformers import HfAgent, load_tool
 
 app = typer.Typer()
 
@@ -213,23 +217,61 @@ def remove_app_name(app_name):
         print("No site directory found. Please got to the project root directory.")
 
 
-@app.command(help="Chat with the Enabled CLI bot.")
+@app.command(help="Chat with the Enabled CLI agent.")
 def chat():
     """
     Chat with the Enabled CLI bot.
     """
+    # Load the agent
+    agent = load_agent()
     try:
-        for char in "Hello, I'm the Enabled CLI bot. How can I help you?":
+        print("Note: Press Ctrl+C to exit.")
+        for char in "Hello, I'm the Enabled CLI agent. How can I help you?":
             print(char, end="", flush=True)
             time.sleep(0.05)
         while True:
             user_input = input("\n>>> ")
-            if user_input == "exit":
-                break
-            else:
-                for char in "Sorry, I don't understand.":
-                    print(char, end="", flush=True)
-                    time.sleep(0.05)
+            for char in run_prompt(agent, user_input):
+                print(char, end="", flush=True)
+                time.sleep(0.05)
+
     except KeyboardInterrupt:
         print("\nBye!")
         sys.exit(0)
+
+
+def load_agent():
+    """
+    Load the agent.
+    """
+    hf_endpoint = "https://api-inference.huggingface.co/models/bigcode/starcoder"
+
+    with open("prompt_template.txt", "r") as f:
+        PROMPT_TEMPLATE = f.read()
+
+    TOOLS = []
+
+    agent = HfAgent(
+        hf_endpoint,
+        run_prompt_template=PROMPT_TEMPLATE,
+        additional_tools=[load_tool(tool) for tool in TOOLS],
+    )
+    return agent
+
+
+def run_prompt(agent, user_input):
+    """
+    Run the prompt.
+    """
+    captured_output = io.StringIO()
+
+    # Redirect stdout to capture the output
+    sys.stdout = captured_output
+
+    # Run the agent
+    agent.run(user_input)
+    # Restore stdout
+    sys.stdout = sys.__stdout__
+    agent_output = captured_output.getvalue()
+    agent_output = re.search(r"==Result==\n(.+)", agent_output).group(1).strip()
+    return agent_output

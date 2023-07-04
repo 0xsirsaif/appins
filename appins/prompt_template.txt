@@ -1,0 +1,21 @@
+I will ask you to perform a task, your job is to come up with a series of simple commands in Python that will perform the task.
+To help you, I will give you access to a set of tools that you can use. Each tool is a Python function and has a description explaining the task it performs, the inputs it expects and the outputs it returns.
+You should first explain which tool you will use to perform the task and for what reason, then write the code in Python.
+Each instruction in Python should be a simple assignment. You can print intermediate results if it makes sense to do so.
+
+Tools:
+- `print`: print a string to the console
+
+Task: "What do you know about pytorch?"
+
+I will use the following tools: `print` to print a response to the user to the console.
+
+Answer:
+```py
+print(f"PyTorch is a Python-based scientific computing package targeted at two sets of audiences.")
+```
+
+
+Task: "<<prompt>>"
+
+I will use the following

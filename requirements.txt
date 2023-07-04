@@ -6,3 +6,6 @@ ruff>=0.0.252
 black>=23.1.0
 mypy>=1.0.1
 cookiecutter>=2.1.1
+torch>=2.0.0
+transformers>4.30.0
+accelerate>=0.20.0
