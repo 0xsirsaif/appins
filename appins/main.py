@@ -1,5 +1,7 @@
 import pathlib
 import subprocess
+import sys
+import time
 
 import typer
 from cookiecutter.main import cookiecutter
@@ -209,3 +211,25 @@ def remove_app_name(app_name):
                     f.write(line)
     else:
         print("No site directory found. Please got to the project root directory.")
+
+
+@app.command(help="Chat with the Enabled CLI bot.")
+def chat():
+    """
+    Chat with the Enabled CLI bot.
+    """
+    try:
+        for char in "Hello, I'm the Enabled CLI bot. How can I help you?":
+            print(char, end="", flush=True)
+            time.sleep(0.05)
+        while True:
+            user_input = input("\n>>> ")
+            if user_input == "exit":
+                break
+            else:
+                for char in "Sorry, I don't understand.":
+                    print(char, end="", flush=True)
+                    time.sleep(0.05)
+    except KeyboardInterrupt:
+        print("\nBye!")
+        sys.exit(0)
