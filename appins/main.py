@@ -237,7 +237,6 @@ def chat():
                     time.sleep(0.05)
 
     except KeyboardInterrupt:
-        print("\nBye!")
         sys.exit(0)
 
 
