@@ -231,7 +231,7 @@ def chat():
     COLOR_RESET = colorama.Style.RESET_ALL
     try:
         print("Note: Press Ctrl+C to exit.")
-        for char in "Hello, I'm the Enabled CLI agent. How can I help you?":
+        for char in f"{COLOR_GREEN}Hello, I'm the Enabled CLI agent. How can I help you?{COLOR_RESET}":
             print(char, end="", flush=True)
             time.sleep(0.05)
         while True:

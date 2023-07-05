@@ -7,6 +7,13 @@ First, here is a description of the project:
 - It has a plugin architecture, treating each app as a plugin.
 - It has a CLI tool that allows you to initialize a new project, add apps (or plugins), and run the project.
 - There is a set of pre-built apps provided by the `Enabled` project, but you can also create your own apps.
+- The pre-built apps are: Assignments, Quizzes, Q&A, Summarization, Chatbot. They are all open source and can be found on GitHub.
+- Steps to create a new project:
+  - Create a new directory for your project
+  - Run `appins init` to initialize the project
+  - Run `appins clone-app <APP_GITHUB_URL>` to add an app to the project
+  - Run `appins merge-esdl` to merge the ESDL files of the apps
+  - Run `appins start` to run the project
 
 Secondly, here is a list of the pre-built apps and their descriptions:
 - `Assignments`: a simple app that allows you to create assignments and assign them to users. You can add attachments to assignments, submit assignments and so on.
