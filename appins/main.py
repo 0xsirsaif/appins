@@ -3,6 +3,7 @@ import pathlib
 import re
 import subprocess
 import sys
+import os
 import time
 
 import colorama
@@ -255,7 +256,8 @@ def load_agent():
     """
     hf_endpoint = "https://api-inference.huggingface.co/models/bigcode/starcoder"
 
-    with open("prompt_template.txt", "r") as f:
+    file_path = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(file_path, "prompt_template.txt"), "r") as f:
         PROMPT_TEMPLATE = f.read()
 
     TOOLS = ["0x70DA/create-enabled-project"]
