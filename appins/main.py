@@ -1,5 +1,4 @@
 import io
-import json
 import pathlib
 import re
 import subprocess
@@ -220,7 +219,7 @@ def remove_app_name(app_name):
 
 
 @app.command(help="Chat with the Enabled CLI agent.")
-def chat():
+def agent():
     """
     Chat with the Enabled CLI bot.
     """
@@ -230,6 +229,7 @@ def chat():
     # ANSI escape sequences for color codes
     COLOR_GREEN = colorama.Fore.GREEN
     COLOR_RESET = colorama.Style.RESET_ALL
+    
     try:
         print("Note: Press Ctrl+C to exit.")
         for (
