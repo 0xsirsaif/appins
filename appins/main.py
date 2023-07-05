@@ -5,14 +5,15 @@ import re
 import subprocess
 import sys
 import time
-import colorama
 
+import colorama
 import typer
 from cookiecutter.main import cookiecutter
 from transformers import HfAgent, load_tool
 
 app = typer.Typer()
 colorama.init()
+
 
 @app.command(help="Create a new project from a template.")
 def init():
@@ -231,7 +232,9 @@ def chat():
     COLOR_RESET = colorama.Style.RESET_ALL
     try:
         print("Note: Press Ctrl+C to exit.")
-        for char in f"{COLOR_GREEN}Hello, I'm the Enabled CLI agent. How can I help you?{COLOR_RESET}":
+        for (
+            char
+        ) in f"{COLOR_GREEN}Hello, I'm the Enabled CLI agent. How can I help you?{COLOR_RESET}":
             print(char, end="", flush=True)
             time.sleep(0.05)
         while True:
@@ -255,7 +258,7 @@ def load_agent():
     with open("prompt_template.txt", "r") as f:
         PROMPT_TEMPLATE = f.read()
 
-    TOOLS = []
+    TOOLS = ["0x70DA/create-enabled-project"]
 
     agent = HfAgent(
         hf_endpoint,
@@ -280,6 +283,6 @@ def run_prompt(agent, user_input):
     sys.stdout = sys.__stdout__
 
     agent_output = captured_output.getvalue()
-    
+
     result = re.search(r"(?<===Result==\n)(.+)", agent_output, re.DOTALL)
     return result.group()

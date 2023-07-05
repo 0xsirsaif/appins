@@ -24,6 +24,7 @@ Secondly, here is a list of the pre-built apps and their descriptions:
 
 Below is a list of tools that you can use to perform the tasks:
 - `print`: print a string to the console
+- `create_project`: create a new Enabled project given a set of apllications. Supported applications are: assignments, quizzes, qna, summarization, chatbot
 
 Task: "What does this project do?"
 
@@ -50,6 +51,18 @@ I will use the following tools: `print` to print a response to the user to the c
 Answer:
 ```py
 print("The Assignments app is a simple app that allows you to create assignments and assign them to users. You can add attachments to assignments, submit assignments and so on.")
+```
+
+Task: "I'd like to create a new project with the summarization and assignments apps."
+
+I will use the following tools: `create_project` to create a new project with the specified apps.
+
+Answer:
+```py
+create_project(["summarization", "assignments"])
+print("Now you should navigate to the project's directory and run `edgedb project init` to initialize the EdgeDB database.")
+print("Then run `appins merge-esdl` to merge the ESDL files of the apps.")
+print("Finally, navigate to the apps directory and run `appins start` to start the project.")
 ```
 
 
