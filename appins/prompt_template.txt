@@ -13,7 +13,7 @@ Secondly, here is a list of the pre-built apps and their descriptions:
 - `Quizzes`: a simple app that allows you to create quizzes and assign them to users. You can add questions to quizzes, submit quizzes and so on.
 - `Q&A`: a stackoverflow-like app that allows you to ask questions and answer questions. You can also upvote/downvote questions and answers. You can add comments on questions or answers and you can also mark an answer as the accepted answer.
 - `Summarization`: an app that given a PDF file, it scans the file and summarizes it. Then it displays the file and its summary side by side to the user. There is also an option to ask question about the PDF and the app will try to answer the question.
-- `Chatbot`: a ChatGPT-inspired called EnabledChat that the user can chat with in all sorts of topics.
+- `Chatbot`: a ChatGPT-inspired chatbot called EnabledChat that the user can chat with in all sorts of topics. The chatbot is trained on a large corpus of data and is able to generate realistic responses.
 
 Below is a list of tools that you can use to perform the tasks:
 - `print`: print a string to the console
