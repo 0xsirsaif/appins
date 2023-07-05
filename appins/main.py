@@ -1,10 +1,18 @@
+import io
 import pathlib
+import re
 import subprocess
+import sys
+import os
+import time
 
+import colorama
 import typer
 from cookiecutter.main import cookiecutter
+from transformers import HfAgent, load_tool
 
 app = typer.Typer()
+colorama.init()
 
 
 @app.command(help="Create a new project from a template.")
@@ -209,3 +217,74 @@ def remove_app_name(app_name):
                     f.write(line)
     else:
         print("No site directory found. Please got to the project root directory.")
+
+
+@app.command(help="Chat with the Enabled CLI agent.")
+def agent():
+    """
+    Chat with the Enabled CLI bot.
+    """
+    # Load the agent
+    agent = load_agent()
+
+    # ANSI escape sequences for color codes
+    COLOR_GREEN = colorama.Fore.GREEN
+    COLOR_RESET = colorama.Style.RESET_ALL
+    
+    try:
+        print("Note: Press Ctrl+C to exit.")
+        for (
+            char
+        ) in f"{COLOR_GREEN}Hello, I'm the Enabled CLI agent. How can I help you?{COLOR_RESET}":
+            print(char, end="", flush=True)
+            time.sleep(0.05)
+        while True:
+            user_input = input(f"\n{COLOR_GREEN}>>> {COLOR_RESET}").strip()
+            for line in run_prompt(agent, user_input):
+                for char in line:
+                    char = f"{COLOR_GREEN}{char}{COLOR_RESET}"
+                    print(char, end="", flush=True)
+                    time.sleep(0.05)
+
+    except KeyboardInterrupt:
+        sys.exit(0)
+
+
+def load_agent():
+    """
+    Load the agent.
+    """
+    hf_endpoint = "https://api-inference.huggingface.co/models/bigcode/starcoder"
+
+    file_path = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(file_path, "prompt_template.txt"), "r") as f:
+        PROMPT_TEMPLATE = f.read()
+
+    TOOLS = ["0x70DA/create-enabled-project"]
+
+    agent = HfAgent(
+        hf_endpoint,
+        run_prompt_template=PROMPT_TEMPLATE,
+        additional_tools=[load_tool(tool) for tool in TOOLS],
+    )
+    return agent
+
+
+def run_prompt(agent, user_input):
+    """
+    Run the prompt.
+    """
+    captured_output = io.StringIO()
+
+    # Redirect stdout to capture the output
+    sys.stdout = captured_output
+
+    # Run the agent
+    agent.run(user_input)
+    # Restore stdout
+    sys.stdout = sys.__stdout__
+
+    agent_output = captured_output.getvalue()
+
+    result = re.search(r"(?<===Result==\n)(.+)", agent_output, re.DOTALL)
+    return result.group()
