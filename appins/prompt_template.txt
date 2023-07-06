@@ -73,9 +73,7 @@ I will use the following tools: `create_project` to create a new project with th
 Answer:
 ```py
 create_project(["summarization", "assignments", "agent"])
-print("Now you should navigate to the project's directory and run `edgedb project init` to initialize the EdgeDB database.")
-print("Then run `appins merge-esdl` to merge the ESDL files of the apps.")
-print("Finally, navigate to the apps directory and run `appins start` to start the project.")
+print("Now you should navigate to the `apps` directory inside the project and run `appins start` to start the server and run the project.")
 ```
 
 
