@@ -6,11 +6,12 @@ First, here is a description of the project:
 - It has a plugin architecture, treating each app as a plugin.
 - It has a CLI tool that allows you to initialize a new project, add apps (or plugins), and run the project.
 - There is a set of pre-built apps provided by the `Enabled` project, but you can also create your own apps.
-- The pre-built apps are: Assignments, Quizzes, Q&A, Summarization, Chatbot.
+- The pre-built apps are: Assignments, Quizzes, Q&A, Summarization, Chatbot, and AI Agent.
 - Steps to create a new project:
   - Create a new directory for your project
   - Run `appins init` to initialize the project
   - Run `appins clone-app <APP_GITHUB_URL>` to add an app to the project
+  - Run `edgedb project init` to initialize the EdgeDB database
   - Run `appins merge-esdl` to merge the ESDL files of the apps
   - Run `appins start` to run the project
 
@@ -20,10 +21,11 @@ Secondly, here is a list of the pre-built apps and their descriptions:
 - `Q&A`: a stackoverflow-like app that allows you to ask questions and answer questions. You can also upvote/downvote questions and answers. You can add comments on questions or answers and you can also mark an answer as the accepted answer.
 - `Summarization`: an app that given a PDF file, it scans the file and summarizes it. Then it displays the file and its summary side by side to the user. There is also an option to ask question about the PDF and the app will try to answer the question.
 - `Chatbot`: a ChatGPT-inspired chatbot called EnabledChat that the user can chat with in all sorts of topics. The chatbot is trained on a large corpus of data and is able to generate realistic responses.
+- `AI Agent`: an application built using the Chatbot app that is able to perform tasks for the user. The user can ask the AI Agent to find a certain assignment for example and the AI Agent will find it for the user and so on.
 
 Below is a list of tools that you can use to perform the tasks:
 - `print`: print a string to the console
-- `create_project`: create a new Enabled project given a set of apllications. Supported applications are: assignments, quizzes, qna, summarization, chatbot
+- `create_project`: create a new Enabled project given a set of apllications. Supported applications are: assignments, quizzes, qna, summarization, chatbot, and agent.
 
 Task: "Tell me about this project."
 
@@ -40,7 +42,7 @@ I will use the following tools: `print` to print a response to the user to the c
 
 Answer:
 ```py
-print("The list of available apps are: Assignments, Quizzes, Q&A, Summarization, Chatbot")
+print("The list of available apps are: Assignments, Quizzes, Q&A, Summarization, Chatbot, and AI Agent.")
 ```
 
 Task: "How can I create a new project?"
@@ -64,13 +66,13 @@ Answer:
 print("The Assignments app is a simple app that allows you to create assignments and assign them to users. You can add attachments to assignments, submit assignments and so on.")
 ```
 
-Task: "I'd like to create a new project with the summarization and assignments apps."
+Task: "I'd like to create a new project with the Summarization, Assignments and the AI Agent apps."
 
 I will use the following tools: `create_project` to create a new project with the specified apps.
 
 Answer:
 ```py
-create_project(["summarization", "assignments"])
+create_project(["summarization", "assignments", "agent"])
 print("Now you should navigate to the project's directory and run `edgedb project init` to initialize the EdgeDB database.")
 print("Then run `appins merge-esdl` to merge the ESDL files of the apps.")
 print("Finally, navigate to the apps directory and run `appins start` to start the project.")
