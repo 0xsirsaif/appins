@@ -44,6 +44,10 @@ requires-python = ">=3.7"
 dependencies = [
     "typer >= 0.7.0",
     "cookiecutter >= 2.1.1",
+    "torch >= 2.0.0",
+    "transformers >= 4.30.0",
+    "accelerate >= 0.20.0",
+    "colorama >= 0.4.6",
 ]
 
 [project.scripts]
