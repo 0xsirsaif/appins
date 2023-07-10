@@ -53,6 +53,7 @@ Answer:
 ```py
 print("You can create a new project by running `appins init` in a new directory.")
 print("Then you can add apps to the project by running `appins clone-app <APP_GITHUB_URL>`.")
+print("Then you can initialize the EdgeDB database by running `edgedb project init`.")
 print("Then you can merge the ESDL files of the apps by running `appins merge-esdl`.")
 print("Finally, you can run the project by running `appins start`.")
 ```
