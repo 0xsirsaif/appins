@@ -42,7 +42,6 @@ def init():
     apps_dir = cwd / project_slug / "apps"
 
     core_app_url = "git@github.com:enabledu/enabled.git"
-    print(f"Cloning {core_app_url}...")
 
     subprocess.run(["git", "clone", core_app_url, apps_dir / "enabled"])
 
@@ -53,8 +52,6 @@ def clone_app(app_url: str):
     Clone an app repository from GitHub into apps directory. and install requirements.
     url: The url of the repository to clone.
     """
-    print(f"Cloning {app_url}...")
-
     apps_directory = "." if pathlib.Path.cwd().name == "apps" else "./apps"
     app_to_clone = app_url.split("/")[-1].replace(".git", "")
 
@@ -137,14 +134,14 @@ def install_requirements():
     Install app requirements.
     app_name: The name of the app to install.
     """
-    print(f"Installing requirements")
+    print(f"Installing requirements...")
     cwd = pathlib.Path.cwd()
     is_apps_besides = True if (cwd / "apps").exists() else False
     if is_apps_besides:
         apps_dir = cwd / "apps"
         for app_dir in apps_dir.iterdir():
             if app_dir.is_dir():
-                requirements_file = app_dir / "requirements.txt"
+                requirements_file = app_dir / "backend" / "requirements.txt"
                 if requirements_file.exists():
                     subprocess.run(
                         ["python", "-m", "pip", "install", "-r", requirements_file]
