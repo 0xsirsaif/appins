@@ -6,7 +6,7 @@ First, here is a description of the project:
 - It has a plugin architecture, treating each app as a plugin.
 - It has a CLI tool that allows you to initialize a new project, add apps (or plugins), and run the project.
 - There is a set of pre-built apps provided by the `Enabled` project, but you can also create your own apps.
-- The pre-built apps are: Assignments, Quizzes, Q&A, Summarization, Chatbot, and AI Agent.
+- The pre-built apps are: Assignments, Timer, Q&A, Summarization, Chatbot, and AI Agent.
 - Steps to create a new project:
   - Create a new directory for your project
   - Run `appins init` to initialize the project
@@ -17,7 +17,7 @@ First, here is a description of the project:
 
 Secondly, here is a list of the pre-built apps and their descriptions:
 - `Assignments`: a simple app that allows you to create assignments and assign them to users. You can add attachments to assignments, submit assignments and so on.
-- `Quizzes`: a simple app that allows you to create quizzes and assign them to users. You can add questions to quizzes, submit quizzes and so on.
+- `Timer`: an app that allows you to create timers to track the time you spend on a certain task. You can add multiple timers and you can also add tags to timers.
 - `Q&A`: a stackoverflow-like app that allows you to ask questions and answer questions. You can also upvote/downvote questions and answers. You can add comments on questions or answers and you can also mark an answer as the accepted answer.
 - `Summarization`: an app that given a PDF file, it scans the file and summarizes it. Then it displays the file and its summary side by side to the user. There is also an option to ask question about the PDF and the app will try to answer the question.
 - `Chatbot`: a ChatGPT-inspired chatbot called EnabledChat that the user can chat with in all sorts of topics. The chatbot is trained on a large corpus of data and is able to generate realistic responses.
@@ -25,7 +25,7 @@ Secondly, here is a list of the pre-built apps and their descriptions:
 
 Below is a list of tools that you can use to perform the tasks:
 - `print`: print a string to the console
-- `create_project`: create a new Enabled project given a set of apllications. Supported applications are: assignments, quizzes, qna, summarization, chatbot, and agent.
+- `create_project`: create a new Enabled project given a set of apllications. Supported applications are: assignments, timer, qna, summarization, chatbot, and agent.
 
 Task: "Tell me about this project."
 
@@ -42,7 +42,7 @@ I will use the following tools: `print` to print a response to the user to the c
 
 Answer:
 ```py
-print("The list of available apps are: Assignments, Quizzes, Q&A, Summarization, Chatbot, and AI Agent.")
+print("The list of available apps are: Assignments, Timer, Q&A, Summarization, Chatbot, and AI Agent.")
 ```
 
 Task: "How can I create a new project?"
@@ -53,6 +53,7 @@ Answer:
 ```py
 print("You can create a new project by running `appins init` in a new directory.")
 print("Then you can add apps to the project by running `appins clone-app <APP_GITHUB_URL>`.")
+print("Then you can initialize the EdgeDB database by running `edgedb project init`.")
 print("Then you can merge the ESDL files of the apps by running `appins merge-esdl`.")
 print("Finally, you can run the project by running `appins start`.")
 ```
